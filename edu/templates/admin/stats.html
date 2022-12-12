@@ -1,0 +1,202 @@
+{% extends 'admin/master.html' %}
+
+{% block body %}
+<!--<h1 class="text-center text-success">THỐNG KÊ - BÁO CÁO</h1>-->
+
+<!--<h1>{{stats}}</h1>-->
+
+
+<h1 class="text-center text-success">THỐNG KÊ ĐIỂM MÔN</h1>
+
+<form style="width:100px;">
+    <select class="form-control" name="id_mon">
+                {% for m in monhoc %}
+                <option value="{{ m.id_mon_hoc }}">{{ m.ten_mon_hoc }}</option>
+                {% endfor %}
+    </select>
+    <select class="form-control" name="id_hoc_ky">
+                {% for k in hocky %}
+                <option value="{{ k.id_hoc_ky }}">{{ k.ten }}</option>
+                {% endfor %}
+    </select>
+    <button class="btn btn-success" type="submit">Bao Cao</button>
+</form>
+
+
+<!--<form class="form-inline">-->
+<!--    <input class="form-control mr-sm-2" name="id_mon" type="text" placeholder="Mon ...">-->
+<!--    <input class="form-control mr-sm-2" name="id_hoc_ky" type="text" placeholder="Hoc Ky ...">-->
+<!--    <button class="btn btn-success" type="submit">Bao Cao</button>-->
+<!--</form>-->
+<br>
+
+<div class="row">
+    <div class="col-md-5 col-xs-12">
+        <table class="table table-striped" >
+           <tr>
+             <th>Ten HS</th>
+             <th>Ten Lop</th>
+             <th>Mon</th>
+             <th>Diem</th>
+
+           </tr>
+            {% for s in stats %}
+            <tr>
+
+                <td>{{s[0]}}</td>
+                <td>{{s[1]}}</td>
+                <td>{{s[2]}}</td>
+                <td>{{s[3]}}</td>
+
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    <div class="col-md-7 col-xs-12">
+         <canvas id="myChart"></canvas>
+    </div>
+</div>
+
+<!--<h1>{{thongke}}</h1>-->
+<h1 class="text-center text-success">BÁO CÁO TỔNG KẾT MÔN HỌC </h1>
+
+<div class="row">
+    <div class="col-md-5 col-xs-12">
+        <table class="table table-striped" >
+           <tr>
+             <th>Ten Lop</th>
+             <th>Si So</th>
+             <th>So Luong Dat</th>
+             <th>Ty Le</th>
+
+           </tr>
+            {% for t in thongke %}
+            <tr>
+
+                <td>{{t[0]}}</td>
+                <td>{{t[1]}}</td>
+                <td>{{t[2]}}</td>
+                <td>{{ "{:,.1f}".format(t[3]) }}%</td>
+
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    <div class="col-md-7 col-xs-12">
+         <canvas id="myStats"></canvas>
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+
+    let labels = []
+    let info = []
+    {% for s in stats %}
+        labels.push('{{ s[0] }}')
+    {% endfor %}
+
+    {% for s in stats %}
+        info.push('{{ s[3] }}')
+    {% endfor %}
+
+    // THONG KE MON TOAN
+
+    let labels1 = []
+    let info1 = []
+    {% for t in thongke %}
+        labels1.push('{{ t[0] }}')
+    {% endfor %}
+
+    {% for t in thongke %}
+        info1.push('{{ t[3] }}')
+    {% endfor %}
+
+    //---
+
+    window.onload = function(){
+        const ctx = document.getElementById('myChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+              labels: labels,
+              datasets: [{
+                label: 'THONG KE DIEM HOC SINH',
+                data: info,
+                backgroundColor: [
+                  'rgba(255, 99, 132, 0.2)',
+                  'rgba(255, 159, 64, 0.2)',
+                  'rgba(255, 205, 86, 0.2)',
+                  'rgba(75, 192, 192, 0.2)',
+                  'rgba(54, 162, 235, 0.2)',
+                  'rgba(153, 102, 255, 0.2)',
+                  'rgba(201, 203, 207, 0.2)'
+                ],
+                borderColor: [
+                  'rgb(255, 99, 132)',
+                  'rgb(255, 159, 64)',
+                  'rgb(255, 205, 86)',
+                  'rgb(75, 192, 192)',
+                  'rgb(54, 162, 235)',
+                  'rgb(153, 102, 255)',
+                  'rgb(201, 203, 207)'
+                ],
+                borderWidth: 1
+              }]
+            },
+            options: {
+              scales: {
+                y: {
+                  beginAtZero: true
+                }
+              }
+            }
+          });
+
+        // THONG KE TONG KET MON TOAN
+
+        const ctx1 = document.getElementById('myStats').getContext('2d');
+        new Chart(ctx1, {
+            type: 'bar',
+            data: {
+              labels: labels1,
+              datasets: [{
+                label: 'BAO CAO TONG KET MON',
+                data: info1,
+                backgroundColor: [
+                  'rgba(255, 99, 132, 0.2)',
+                  'rgba(255, 159, 64, 0.2)',
+                  'rgba(255, 205, 86, 0.2)',
+                  'rgba(75, 192, 192, 0.2)',
+                  'rgba(54, 162, 235, 0.2)',
+                  'rgba(153, 102, 255, 0.2)',
+                  'rgba(201, 203, 207, 0.2)'
+                ],
+                borderColor: [
+                  'rgb(255, 99, 132)',
+                  'rgb(255, 159, 64)',
+                  'rgb(255, 205, 86)',
+                  'rgb(75, 192, 192)',
+                  'rgb(54, 162, 235)',
+                  'rgb(153, 102, 255)',
+                  'rgb(201, 203, 207)'
+                ],
+                borderWidth: 1
+              }]
+            },
+            options: {
+              scales: {
+                y: {
+                  beginAtZero: true
+                }
+              }
+            }
+        });
+    }
+
+
+</script>
+
+
+{% endblock %}

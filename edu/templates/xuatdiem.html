@@ -1,0 +1,57 @@
+{% extends 'layout/base.html' %}
+
+{% block title %}Xuat Diem{% endblock %}
+
+
+{% block content %}
+<nav class="navbar navbar-expand-sm bg-light">
+
+  <!-- Links -->
+  <ul class="navbar-nav">
+
+    <li class="nav-item">
+      <a class="nav-link" href="{{ url_for('bang_diem')}}">Nhập Điểm</a>
+    </li>
+
+  </ul>
+</nav>
+
+<h3 class="text-center text-info" style="margin: 25px">BẢNG ĐIỂM MÔN HỌC</h3>
+
+<nav class="navbar navbar-expand-sm bg-light">
+  <ul class="navbar-nav">
+      {% for m in monhoc %}
+      <li class="nav-item">
+        <a class="nav-link" href="/xuatdiem?mon_id={{ m.id_mon_hoc }}">Xuất Điểm Môn {{ m.ten_mon_hoc}}</a>
+      </li>
+      {% endfor %}
+  </ul>
+</nav>
+<div >
+     <table class="table table-striped" >
+       <tr>
+         <th>Tên HS</th>
+
+         <th>Tên Lớp</th>
+         <th>Học Kỳ</th>
+         <th>Điểm TB</th>
+
+       </tr>
+       {% for s in xuatdiem %}
+       <tr>
+         <td>{{ s[0] }}</td>
+         <td>{{ s[1] }}</td>
+         <td>{{ s[2] }}</td>
+         <td>
+             {{ s[3] }}
+         </td>
+
+
+       </tr>
+       {% endfor %}
+     </table>
+</div>
+
+
+
+{% endblock %}
